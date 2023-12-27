@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-robotoregular text-purple-dark text-base bg-[#F1F5F9];
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-robotobold;
+  }
+
+  h1 {
+    @apply text-5xl;
+  }
+  h2 {
+    @apply lg:text-4xl sm:text-3xl text-2xl;
+  }
+  h3 {
+    @apply text-3xl;
+  }
+  h4 {
+    @apply text-2xl;
+  }
+  h5 {
+    @apply text-xl;
+  }
+  h6 {
+    @apply text-lg;
+  }
+}
+
+@layer utilities {
+  @font-face {
+    font-family: "robotoblack";
+    src: url("../assets/fonts/roboto-black-webfont.woff2") format("woff2"),
+      url("../assets/fonts/roboto-black-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "robotobold";
+    src: url("../assets/fonts/roboto-bold-webfont.woff2") format("woff2"),
+      url("../assets/fonts/roboto-bold-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "robotolight";
+    src: url("../assets/fonts/roboto-light-webfont.woff2") format("woff2"),
+      url("../assets/fonts/roboto-light-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "robotomedium";
+    src: url("../assets/fonts/roboto-medium-webfont.woff2") format("woff2"),
+      url("../assets/fonts/roboto-medium-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "robotoregular";
+    src: url("../assets/fonts/roboto-regular-webfont.woff2") format("woff2"),
+      url("../assets/fonts/roboto-regular-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+}
