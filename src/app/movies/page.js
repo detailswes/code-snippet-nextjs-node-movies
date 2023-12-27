@@ -15,49 +15,49 @@ const MyMovies = () => {
         </div>
 
         <div className="mx-auto grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#0829358C] transition-all">
+            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1e414e] transition-all">
               <Image className='w-full h-auto rounded-xl' src={ProductImage} alt='product-image' />
               <h6 className='mt-4 mb-2 mx-2'>Movie 1</h6>
               <p className='mb-2 mx-2'>2021</p>
             </div>
 
-            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#0829358C] transition-all">
+            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1e414e] transition-all">
               <Image className='w-full h-auto rounded-xl' src={ProductImage} alt='product-image' />
               <h6 className='mt-4 mb-2 mx-2'>Movie 1</h6>
               <p className='mb-2 mx-2'>2021</p>
             </div>
 
-            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#0829358C] transition-all">
+            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1e414e] transition-all">
               <Image className='w-full h-auto rounded-xl' src={ProductImage} alt='product-image' />
               <h6 className='mt-4 mb-2 mx-2'>Movie 1</h6>
               <p className='mb-2 mx-2'>2021</p>
             </div>
 
-            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#0829358C] transition-all">
+            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1e414e] transition-all">
               <Image className='w-full h-auto rounded-xl' src={ProductImage} alt='product-image' />
               <h6 className='mt-4 mb-2 mx-2'>Movie 1</h6>
               <p className='mb-2 mx-2'>2021</p>
             </div>
 
-            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#0829358C] transition-all">
+            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1e414e] transition-all">
               <Image className='w-full h-auto rounded-xl' src={ProductImage} alt='product-image' />
               <h6 className='mt-4 mb-2 mx-2'>Movie 1</h6>
               <p className='mb-2 mx-2'>2021</p>
             </div>
 
-            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#0829358C] transition-all">
+            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1e414e] transition-all">
               <Image className='w-full h-auto rounded-xl' src={ProductImage} alt='product-image' />
               <h6 className='mt-4 mb-2 mx-2'>Movie 1</h6>
               <p className='mb-2 mx-2'>2021</p>
             </div>
 
-            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#0829358C] transition-all">
+            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1e414e] transition-all">
               <Image className='w-full h-auto rounded-xl' src={ProductImage} alt='product-image' />
               <h6 className='mt-4 mb-2 mx-2'>Movie 1</h6>
               <p className='mb-2 mx-2'>2021</p>
             </div>
 
-            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#0829358C] transition-all">
+            <div className="bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1e414e] transition-all">
               <Image className='w-full h-auto rounded-xl' src={ProductImage} alt='product-image' />
               <h6 className='mt-4 mb-2 mx-2'>Movie 1</h6>
               <p className='mb-2 mx-2'>2021</p>
