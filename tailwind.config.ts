@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,20 +13,19 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        robotolight: ["robotolight", "sans-serif"],
-        robotoregular: ["robotoregular", "sans-serif"],
-        robotomedium: ["robotomedium", "sans-serif"],
-        robotobold: ["robotobold", "sans-serif"],
-        robotoblack: ["robotoblack", "sans-serif"],
+        Montserratlight: ["Montserrat-light", "sans-serif"],
+        Montserratregular: ["Montserrat-regular", "sans-serif"],
+        Montserratmedium: ["Montserrat-medium", "sans-serif"],
+        Montserratbold: ["Montserrat-bold", "sans-serif"],
+        Montserratblack: ["Montserrat-black", "sans-serif"],
       },
       colors: {
-        "purple-dark": "#2D3561",
-        primary: "#2563EB",
-        secondary: "#10B981",
-        boxdark: "#24303F",
-        "boxdark-2": "#1A222C",
-        strokedark: "#2E3A47",
-        bodydark: "#AEB7C0",
+        primary: "#2BD17E",
+        error: "#EB5757",
+        background: "#093545",
+        input: "#224957",
+        card: "#092C39",
+        white: "#FFFFFF",
       },
       gridTemplateRows: {
         '[auto,auto,1fr]': 'auto auto 1fr',
@@ -52,6 +52,9 @@ module.exports = {
       15: '15',
       16: '16',
     },
+    container: {
+      center: true,
+    },
   },
   variants: {
     aspectRatio: ['responsive', 'hover']
@@ -60,3 +63,5 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
   ],
 };
+
+
