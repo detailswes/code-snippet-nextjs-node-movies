@@ -10,7 +10,7 @@ const signIn = () => {
     <InputBox className="inputbox" type="password" name="password" placeholder="Password"  />
     <div className="flex items-center justify-center mb-6">
         <input id="remember-me" type="checkbox" value="" className="w-[18px] h-[18px] mr-2 text-input bg-input accent-primary rounded-lg focus:ring-primary outline-none focus:ring-1"/>
-        <label for="remember-me" className="text-sm font-normal text-white">Remember me</label> 
+        <label className="text-sm font-normal text-white">Remember me</label> 
     </div>
     <input className="button" type="submit" value="Login" />
     </form>
