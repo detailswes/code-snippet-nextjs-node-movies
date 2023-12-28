@@ -3,76 +3,35 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply font-robotoregular text-purple-dark text-base bg-[#F1F5F9];
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-robotobold;
-  }
-
   h1 {
-    @apply text-5xl;
+    @apply text-5xl lg:text-[64px] font-semibold text-white;
   }
   h2 {
-    @apply lg:text-4xl sm:text-3xl text-2xl;
-  }
-  h3 {
-    @apply text-3xl;
-  }
-  h4 {
-    @apply text-2xl;
-  }
-  h5 {
-    @apply text-xl;
+    @apply text-[32px] lg:text-5xl	font-bold	text-white;
   }
   h6 {
-    @apply text-lg;
+    @apply text-xl text-white font-medium;
+  }
+  p {
+    @apply text-sm text-white font-normal;
   }
 }
 
-@layer utilities {
-  @font-face {
-    font-family: "robotoblack";
-    src: url("../assets/fonts/roboto-black-webfont.woff2") format("woff2"),
-      url("../assets/fonts/roboto-black-webfont.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
-  }
 
-  @font-face {
-    font-family: "robotobold";
-    src: url("../assets/fonts/roboto-bold-webfont.woff2") format("woff2"),
-      url("../assets/fonts/roboto-bold-webfont.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
+@layer components {
+  .inputbox {
+    @apply bg-input h-[45px] rounded-[10px] text-sm text-white focus:ring-1 focus:ring-primary p-4 outline-none w-full;
   }
-
-  @font-face {
-    font-family: "robotolight";
-    src: url("../assets/fonts/roboto-light-webfont.woff2") format("woff2"),
-      url("../assets/fonts/roboto-light-webfont.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
+  .light-button {
+    @apply bg-transparent border-white border rounded-[10px] text-white text-base font-bold h-[54px] w-full;
   }
-
-  @font-face {
-    font-family: "robotomedium";
-    src: url("../assets/fonts/roboto-medium-webfont.woff2") format("woff2"),
-      url("../assets/fonts/roboto-medium-webfont.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
+  .button {
+    @apply bg-primary rounded-[10px] text-white text-base font-bold h-[54px] w-full;
   }
-
-  @font-face {
-    font-family: "robotoregular";
-    src: url("../assets/fonts/roboto-regular-webfont.woff2") format("woff2"),
-      url("../assets/fonts/roboto-regular-webfont.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
+  .pagination-control {
+    @apply bg-transparent outline-none font-bold text-base text-white mx-2;
+  }
+  .pagination-count {
+    @apply py-2 px-4 bg-primary rounded font-bold text-white text-base outline-none mx-2;
   }
 }
