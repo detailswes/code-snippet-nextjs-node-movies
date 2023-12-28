@@ -12,7 +12,15 @@ const nextConfig = {
         ],
     },
 };
-
+module.exports = {
+    webpack: (config, { isServer }) => {
+      if (!isServer) {
+        config.resolve.alias['fs'] = require.resolve('./mock-fs.js');
+      }
+      return config;
+    },
+  };
+  
 const withSvgr = require("next-plugin-svgr");
 
 module.exports = withSvgr(nextConfig);
