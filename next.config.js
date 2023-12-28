@@ -1,26 +1,45 @@
 
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//     images: {
+//         remotePatterns: [
+//             {
+//                 protocol: 'https',
+//                 hostname: 'fakestoreapi.com',
+//                 port: '',
+//                 pathname: '/**',
+//             },
+//         ],
+//     },
+// };
+
+  
+// const withSvgr = require("next-plugin-svgr");
+
+// module.exports = withSvgr(nextConfig);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'fakestoreapi.com',
-                port: '',
-                pathname: '/**',
-            },
-        ],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'fakestoreapi.com',
+          port: '',
+          pathname: '/**',
+        },
+      ],
     },
-};
-module.exports = {
-    webpack: (config, { isServer }) => {
-      if (!isServer) {
-        config.resolve.alias['fs'] = require.resolve('./mock-fs.js');
-      }
-      return config;
+    async rewrites() {
+      return [
+        {
+          source: '/api-docs/:path*',
+          destination: '/api/api-docs/:path*',
+        },
+      ];
     },
   };
   
-const withSvgr = require("next-plugin-svgr");
-
-module.exports = withSvgr(nextConfig);
+  const withSvgr = require("next-plugin-svgr");
+  
+  module.exports = withSvgr(nextConfig);
+  

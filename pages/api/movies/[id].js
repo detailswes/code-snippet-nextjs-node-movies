@@ -66,13 +66,52 @@ async function updateMovie(req, res) {
 
       await existingMovie.save();
 
-      handleSuccess(res, 200, 'Movie updated successfully', existingMovie);
+      handleSuccess(res, 200, 'Movie updated successfully', data=existingMovie);
     });
   } catch (error) {
+    handleErrors(res, 500, 'Internal Server Error');
+  } 
+}
+
+async function getMovieById(req, res) {
+  try {
+    await connectToDatabase();
+
+    const movieId = req.query.id;
+    const objectId = mongoose.Types.ObjectId.isValid(movieId)? mongoose.Types.ObjectId.createFromHexString(movieId): null;
+    const movie = await Movie.findById(objectId);
+
+    if (!movie) {
+      handleErrors(res, 404, 'Movie not found');
+      return;
+    }
+
+    handleSuccess(res, 200, 'Movie get successfully', movie);
+   
+  } catch (error) {
+    console.error(error);
     handleErrors(res, 500, 'Internal Server Error');
   }
 }
 
-const authenticatedUpdateMovie = authMiddleware(updateMovie);
+const applyAuthMiddleware = (handler) => authMiddleware(handler);
 
-export default authenticatedUpdateMovie;
+const handlers = {
+  PATCH: applyAuthMiddleware(updateMovie),
+  GET: applyAuthMiddleware(getMovieById),
+};
+
+export default async function handler(req, res) {
+  const method = req.method.toUpperCase();
+  const selectedHandler = handlers[method];
+
+  if (selectedHandler) {
+    selectedHandler(req, res);
+  } else {
+    handleErrors(res, 405, 'Method Not Allowed');
+  }
+}
+
+// const authenticatedUpdateMovie = authMiddleware(updateMovie);
+
+// export default authenticatedUpdateMovie;

@@ -8,19 +8,11 @@ const handleErrors = (res, status, message) => {
   res.status(status).json({ success: false, message });
 };
 
-const handleSuccess = (res, status, message, data = null) => {
-  res.status(status).json({ success: true, message, data });
+const handleSuccess = (res, status, message, token = null) => {
+  res.status(status).json({ success: true, message, token });
 };
 
-/**
- * @swagger
- * /api/hello:
- *   get:
- *     description: Returns the hello world
- *     responses:
- *       200:
- *         description: hello world
- */
+
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
@@ -44,7 +36,7 @@ export default async function handler(req, res) {
 
       const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: process.env.TOKEN_EXPIRATION });
 
-      handleSuccess(res, 200, token);
+      handleSuccess(res, 200, 'Login successfully' ,token);
     } catch (error) {
       console.error(error);
       handleErrors(res, 500, 'Internal Server Error');
