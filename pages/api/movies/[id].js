@@ -1,10 +1,10 @@
-import { connectToDatabase } from '../database/db';
-import Movie from '../models/movies';
-import upload from '../utils/imageUpload/multer';
-import validateMovieInput from '../validation/movieUpdateValidation';
-import fs from 'fs';
-import authMiddleware from '../utils/middleware/jwtAuth';
-import mongoose from 'mongoose';
+import { connectToDatabase } from "../database/db";
+import Movie from "../models/movies";
+import upload from "../utils/imageUpload/multer";
+import validateMovieInput from "../validation/movieUpdateValidation";
+import fs from "fs";
+import authMiddleware from "../utils/middleware/jwtAuth";
+import mongoose from "mongoose";
 
 export const config = {
   api: {
@@ -24,9 +24,9 @@ async function updateMovie(req, res) {
   try {
     await connectToDatabase();
 
-    upload.single('poster')(req, res, async function (err) {
+    upload.single("poster")(req, res, async function (err) {
       if (err) {
-        handleErrors(res, 500, 'Error uploading file');
+        handleErrors(res, 500, "Error uploading file");
         return;
       }
 
@@ -42,19 +42,23 @@ async function updateMovie(req, res) {
       }
 
       const movieId = req.query.id;
-      const objectId = mongoose.Types.ObjectId.isValid(movieId)? mongoose.Types.ObjectId.createFromHexString(movieId): null;
+      const objectId = mongoose.Types.ObjectId.isValid(movieId)
+        ? mongoose.Types.ObjectId.createFromHexString(movieId)
+        : null;
       const existingMovie = await Movie.findById(objectId);
 
       if (!existingMovie) {
-        if(req.file){
+        if (req.file) {
           fs.unlinkSync(req?.file?.path);
         }
-        handleErrors(res, 404, 'Movie not found');
+        handleErrors(res, 404, "Movie not found");
         return;
       }
 
       // Delete the old poster image
-      const oldPosterPath = `public/movies/${existingMovie.poster.split('/').pop()}`;
+      const oldPosterPath = `public/movies/${existingMovie.poster
+        .split("/")
+        .pop()}`;
       if (fs.existsSync(oldPosterPath) && req.file) {
         fs.unlinkSync(oldPosterPath);
       }
@@ -62,15 +66,17 @@ async function updateMovie(req, res) {
       // Update the movie details
       existingMovie.title = value.title;
       existingMovie.publishingYear = value.publishingYear;
-      existingMovie.poster = req.file ? `${process.env.BASE_URL}movies/${req.file.filename}` : existingMovie.poster;
+      existingMovie.poster = req.file
+        ? `${process.env.BASE_URL}movies/${req.file.filename}`
+        : existingMovie.poster;
 
       await existingMovie.save();
 
-      handleSuccess(res, 200, 'Movie updated successfully', data=existingMovie);
+      handleSuccess(res, 200, "Movie updated successfully", existingMovie);
     });
   } catch (error) {
-    handleErrors(res, 500, 'Internal Server Error');
-  } 
+    handleErrors(res, 500, "Internal Server Error");
+  }
 }
 
 async function getMovieById(req, res) {
@@ -78,19 +84,20 @@ async function getMovieById(req, res) {
     await connectToDatabase();
 
     const movieId = req.query.id;
-    const objectId = mongoose.Types.ObjectId.isValid(movieId)? mongoose.Types.ObjectId.createFromHexString(movieId): null;
+    const objectId = mongoose.Types.ObjectId.isValid(movieId)
+      ? mongoose.Types.ObjectId.createFromHexString(movieId)
+      : null;
     const movie = await Movie.findById(objectId);
 
     if (!movie) {
-      handleErrors(res, 404, 'Movie not found');
+      handleErrors(res, 404, "Movie not found");
       return;
     }
 
-    handleSuccess(res, 200, 'Movie get successfully', movie);
-   
+    handleSuccess(res, 200, "Movie get successfully", movie);
   } catch (error) {
     console.error(error);
-    handleErrors(res, 500, 'Internal Server Error');
+    handleErrors(res, 500, "Internal Server Error");
   }
 }
 
@@ -108,7 +115,7 @@ export default async function handler(req, res) {
   if (selectedHandler) {
     selectedHandler(req, res);
   } else {
-    handleErrors(res, 405, 'Method Not Allowed');
+    handleErrors(res, 405, "Method Not Allowed");
   }
 }
 

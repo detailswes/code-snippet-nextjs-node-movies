@@ -1,17 +1,21 @@
 "use client";
-import MoviesForm from "../../../../components/movies/MoviesForm";
+import MoviesForm from "../../../../components/MoviesForm";
 import { useGetMovieByIdQuery } from "../../../../services/movies";
+import Loader from "../../../../common/Loader";
+import { useState } from "react";
 
 const EditMovie = ({ params }) => {
-  console.log(params.id, "id");
-  const { data: movie, error, isLoading } = useGetMovieByIdQuery(params.id);
-
-  return (
+  const id = params.id;
+  const { data: movie, error, isLoading } = useGetMovieByIdQuery(id);
+  const editPage = true;
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="container px-6">
-      <div className="h-screen py-32">
+      <div className="py-32">
         <div className="w-full">
           <h1 className="mb-32">Edit</h1>
-          <MoviesForm movie={movie} />
+          <MoviesForm movie={movie} editPage={editPage} id={id} />
         </div>
       </div>
     </div>

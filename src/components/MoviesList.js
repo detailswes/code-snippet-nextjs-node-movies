@@ -1,13 +1,18 @@
 "use client";
-import PlusIcon from "../../assets/images/icons/plus.svg";
-import LogoutIcon from "../../assets/images/icons/logout.svg";
-import Image from "next/image";
-import ProductImage from "../../assets/images/product.jpeg";
+import PlusIcon from ".././assets/images/icons/plus.svg";
+import LogoutIcon from ".././assets/images/icons/logout.svg";
 import Link from "next/link";
-import { removeToken } from "../../helpers/utils";
+import { removeToken } from "../helpers/utils";
 import { useRouter } from "next/navigation";
 
-const MoviesList = ({ movies, isLoading }) => {
+const MoviesList = ({
+  movies,
+  isLoading,
+  currentPage,
+  totalPages,
+  totalCount,
+  onPageChange,
+}) => {
   const router = useRouter();
   const handleLogout = () => {
     removeToken();
@@ -40,11 +45,13 @@ const MoviesList = ({ movies, isLoading }) => {
               key={index}
               className="group bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1E414E] transition-all"
             >
-              <Image
-                className="w-full h-auto rounded-xl"
-                src={ProductImage}
-                alt="product-image"
-              />
+              <div className="h-[263px]">
+                <img
+                  className="object-cover object-center w-full h-full rounded-xl"
+                  src={movie.poster}
+                  alt="product-image"
+                />
+              </div>
               <div className="flex justify-between items-start">
                 <div className="mt-4 mb-2">
                   <h6 className="mb-2 mx-2">{movie.title}</h6>
@@ -62,10 +69,37 @@ const MoviesList = ({ movies, isLoading }) => {
           ))}
         </div>
         <div className="flex justify-center items-center mt-32 flex-wrap">
-          <button className="pagination-control">Prev</button>
-          <button className="pagination-count bg-primary">1</button>
-          <button className="pagination-count bg-card">2</button>
-          <button className="pagination-control">Next</button>
+          <button
+            onClick={() => onPageChange(currentPage - 1)}
+            className={`pagination-control ${
+              currentPage === 1 ? "disabled" : ""
+            }`}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages).keys()].map((page) => (
+            <button
+              key={page + 1}
+              onClick={() => onPageChange(page + 1)}
+              className={`pagination-count ${
+                currentPage === page + 1 ? "bg-primary" : "bg-card"
+              }`}
+            >
+              {page + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            className={`pagination-control ${
+              currentPage === totalPages ? "disabled" : ""
+            }`}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
         </div>
       </div>
     </>

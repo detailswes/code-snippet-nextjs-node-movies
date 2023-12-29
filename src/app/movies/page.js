@@ -1,12 +1,31 @@
 "use client";
-import React from "react";
-import MoviesList from "../../components/movies/MoviesList";
-import EmptyList from "../../components/movies/EmptyList";
+import React, { useState } from "react";
+import MoviesList from "../../components/MoviesList";
+import EmptyList from "../../components/EmptyList";
 import { useGetMoviesQuery } from "../../services/movies";
 import Loader from "../../common/Loader";
 
 const MyMovies = () => {
-  const { data: movies, error, isLoading } = useGetMoviesQuery();
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+
+  const {
+    data: moviesData,
+    error,
+    isLoading,
+  } = useGetMoviesQuery({
+    page: currentPage,
+    pageSize: pageSize,
+  });
+
+  const movies = moviesData?.data || [];
+  const totalCount = moviesData?.totalCount || 0;
+
+  const totalPages = Math.ceil(totalCount / pageSize);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -14,10 +33,19 @@ const MyMovies = () => {
         <Loader />
       ) : (
         <div className="container px-6">
-          {movies?.data?.length === 0 ? (
+          {movies.length === 0 ? (
             <EmptyList />
           ) : (
-            <MoviesList movies={movies?.data} isLoading={isLoading} />
+            <>
+              <MoviesList
+                movies={movies}
+                isLoading={isLoading}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalCount={totalCount}
+                onPageChange={handlePageChange}
+              />
+            </>
           )}
         </div>
       )}

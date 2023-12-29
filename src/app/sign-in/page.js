@@ -14,9 +14,9 @@ const initialValues = {
 
 const FormSchema = Yup.object({
   email: Yup.string()
-    .email("Invalid email Format")
-    .required("Please Enter Your Email"),
-  password: Yup.string().required("Please Enter Your Password"),
+    .email("Invalid email format")
+    .required("Please enter your email"),
+  password: Yup.string().required("Please enter your password"),
 });
 
 const SignIn = () => {
@@ -52,11 +52,11 @@ const SignIn = () => {
 
   return (
     <>
-      <div className="h-screen flex justify-center items-center mx-3.5">
+      <div className="flex justify-center items-center mx-3.5">
         <div className="max-w-[300px]">
           <h1 className="mb-10 text-center">Sign in</h1>
           <form method="post" onSubmit={handleSubmit}>
-            <div>
+            <div className="mb-6">
               <InputBox
                 className={`inputbox ${
                   errors.email && touched.email ? "border border-error" : ""
@@ -75,7 +75,7 @@ const SignIn = () => {
               </span>
             </div>
 
-            <div>
+            <div className="mb-6">
               <InputBox
                 className={`inputbox ${
                   errors.password && touched.password
@@ -110,7 +110,11 @@ const SignIn = () => {
                 Remember me
               </label>
             </div>
-            <input className="button" type="submit" value="Login" />
+            <input
+              className="button"
+              type="submit"
+              value={loading ? "Loading..." : "Login"}
+            />
           </form>
         </div>
       </div>

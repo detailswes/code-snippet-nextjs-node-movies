@@ -16,13 +16,17 @@ export const moviesApi = createApi({
   }),
   endpoints: (builder) => ({
     getMovies: builder.query({
-      query: () => "movies",
+      // Modify the query to accept page and pageSize parameters
+      query: ({ page = 1, pageSize = 10 } = {}) => {
+        return `movies?page=${page}&pageSize=${pageSize}`;
+      },
     }),
     getMovieById: builder.query({
       query: (id) => `movies/${id}`,
     }),
     addMovie: builder.mutation({
       query: (formData) => {
+        console.log("FormData:", formData);
         return {
           url: "movies",
           method: "POST",
@@ -32,12 +36,19 @@ export const moviesApi = createApi({
       providesTags: (result) => result,
     }),
     updateMovie: builder.mutation({
-      query: ({ id, updatedMovie }) => ({
-        url: `movies/${id}`,
-        method: "PUT",
-        body: updatedMovie,
-      }),
+      query: ({ id, formData }) => {
+        console.log("ID:", id);
+        console.log("FormData:", formData);
+
+        return {
+          url: `movies/${id}`,
+          method: "PATCH",
+          body: formData,
+        };
+      },
+      providesTags: (result) => result,
     }),
+
     deleteMovie: builder.mutation({
       query: (id) => ({
         url: `movies/${id}`,

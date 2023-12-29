@@ -13,13 +13,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} bg-background bg-[url('../assets/images/waves.png')] bg-contain bg-no-repeat bg-bottom `}
-      >
-        <Providers>
-          <ToastContainer />
-          {children}
-        </Providers>
+      <body>
+        <div
+          className={`${inter.className} bg-background bg-[url('../assets/images/waves.png')] bg-contain bg-no-repeat bg-bottom `}
+        >
+          <Providers>
+            <ToastContainer />
+            {children}
+          </Providers>
+        </div>
       </body>
     </html>
   );
