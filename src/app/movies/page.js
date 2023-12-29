@@ -1,16 +1,26 @@
+"use client";
+import React from "react";
 import MoviesList from "../../components/movies/MoviesList";
 import EmptyList from "../../components/movies/EmptyList";
+import { useGetMoviesQuery } from "../../services/movies";
+import Loader from "../../common/Loader";
 
 const MyMovies = () => {
+  const { data: movies, error, isLoading } = useGetMoviesQuery();
+
   return (
     <>
-      <div className="container px-6">
-        {/* The below code lines is for empty state */}
-        {/* <EmptyList/> */}
-
-        {/* below is for Movie list */}
-        <MoviesList />
-      </div>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="container px-6">
+          {movies?.data?.length === 0 ? (
+            <EmptyList />
+          ) : (
+            <MoviesList movies={movies?.data} isLoading={isLoading} />
+          )}
+        </div>
+      )}
     </>
   );
 };

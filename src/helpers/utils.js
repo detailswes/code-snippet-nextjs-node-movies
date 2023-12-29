@@ -10,7 +10,7 @@ const getToken = () => {
 };
 
 const removeToken = () => {
-  Cookies.remove("token", { path: "/" });
+  Cookies.remove("token");
 };
 
 export { setToken, getToken, removeToken };
