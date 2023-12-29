@@ -1,23 +1,3 @@
-## E-commerce Platform using Next.js, React, and Tailwind CSS
-
-This is a E-commerce Platform that leverages Next.js as the framework, Tailwind CSS for styling, and React for building user interfaces. The project utilizes Next.js as the build tool. For state management, React's built-in features are employed, and for routing, React Router DOM is utilized.
-
-### Pages Included
-
-```bash
-Home
-About Us
-Product Details
-Cart
-Checkout
-```
-
-### API Used
-
-Product Lising : https://fakestoreapi.com/products
-
-Product Detail : https://fakestoreapi.com/products/1
-
 ### Prerequisites
 
 Make sure you have the following installed on your machine:
@@ -30,7 +10,7 @@ Make sure you have the following installed on your machine:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/digvijaysingh100/code-snippet-nextjs-shopping-cart.git
+git clone https://github.com/detailswes/code-snippet-nextjs-node-movies
 ```
 
 2. Navigate to the project directory:

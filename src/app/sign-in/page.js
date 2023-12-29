@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
-import InputBox from "../../common/Inputbox";
+import InputBox from "common/Inputbox";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { setToken } from "../../helpers/utils";
+import { setToken } from "helpers/utils";
 import { toast } from "react-toastify";
 const initialValues = {
   email: "",
@@ -22,7 +22,7 @@ const FormSchema = Yup.object({
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
@@ -30,10 +30,7 @@ const SignIn = () => {
       onSubmit: async (values, action) => {
         setLoading(true);
         try {
-          const response = await axios.post(
-            "http://localhost:3000/api/users",
-            values
-          );
+          const response = await axios.post(`${apiUrl}users`, values);
           toast.success("Login successfully");
           const token = response.data.token;
           setToken(token);
@@ -52,7 +49,7 @@ const SignIn = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center mx-3.5">
+      <div className="h-screen flex justify-center items-center mx-3.5">
         <div className="max-w-[300px]">
           <h1 className="mb-10 text-center">Sign in</h1>
           <form method="post" onSubmit={handleSubmit}>

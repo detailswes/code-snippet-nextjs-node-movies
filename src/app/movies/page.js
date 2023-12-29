@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import MoviesList from "../../components/MoviesList";
-import EmptyList from "../../components/EmptyList";
-import { useGetMoviesQuery } from "../../services/movies";
-import Loader from "../../common/Loader";
+import MoviesList from "components/MoviesList";
+import EmptyList from "components/EmptyList";
+import { useGetMoviesQuery } from "services/movies";
+import Loader from "common/Loader";
 
 const MyMovies = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,16 +36,14 @@ const MyMovies = () => {
           {movies.length === 0 ? (
             <EmptyList />
           ) : (
-            <>
-              <MoviesList
-                movies={movies}
-                isLoading={isLoading}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                totalCount={totalCount}
-                onPageChange={handlePageChange}
-              />
-            </>
+            <MoviesList
+              movies={movies}
+              isLoading={isLoading}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalCount={totalCount}
+              onPageChange={handlePageChange}
+            />
           )}
         </div>
       )}

@@ -1,15 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
-import UploadIcon from ".././assets/images/icons/upload.svg";
-import InputBox from "../common/Inputbox";
+import { useDropzone } from "react-dropzone";
+import UploadIcon from "assets/images/icons/upload.svg";
+import InputBox from "common/Inputbox";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { useAddMovieMutation } from "../services/movies";
-import { useUpdateMovieMutation } from "../services/movies";
+import { useAddMovieMutation } from "services/movies";
+import { useUpdateMovieMutation } from "services/movies";
 import Link from "next/link";
-import { useGetMoviesQuery } from "../services/movies";
 const FormSchema = Yup.object({
   title: Yup.string().required("Please enter the title"),
   publishingYear: Yup.number()
@@ -29,7 +29,6 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
     publishingYear: "",
     poster: null,
   };
-  const { refetch: refetchMovies } = useGetMoviesQuery();
   const {
     values,
     errors,
@@ -47,7 +46,6 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
       formData.append("title", values.title);
       formData.append("publishingYear", values.publishingYear);
       formData.append("poster", values.poster);
-      console.log(values, "values");
       if (editPage) {
         try {
           setLoading(true);
@@ -56,14 +54,11 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
             formData: formData,
           };
           const response = await updateMovie(data);
-          console.log(response, "response");
           if (response?.data?.success === true) {
             toast.success("Movie Updated successfully!");
-            onSuccess();
             router.push("/");
           }
         } catch (error) {
-          console.log(error);
           if (error.data) {
             toast.error(error.data.message);
           } else {
@@ -76,14 +71,11 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
         try {
           setLoading(true);
           const response = await addMovie(formData);
-          window.console.log(response, "response");
           if (response?.data?.success === true) {
             toast.success("Movie added successfully!");
-            onSuccess();
             router.push("/");
           }
         } catch (error) {
-          window.console.log(error);
           if (error.data) {
             toast.error(error.data.message);
           } else {
@@ -111,6 +103,13 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
     setFieldValue("poster", e.target.files[0]);
   };
 
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "image/*",
+    onDrop: (acceptedFiles) => {
+      setFieldValue("poster", acceptedFiles[0]);
+    },
+  });
+
   return (
     <form method="post" onSubmit={handleSubmit}>
       <div className="w-full lg:flex items-start">
@@ -118,6 +117,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
           <label
             htmlFor="dropzone-file"
             className="flex flex-col items-center justify-center w-full min-h-[504px] border-2 border-white border-dashed rounded-xl cursor-pointer bg-input"
+            {...getRootProps()}
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <UploadIcon className="mb-2" />
@@ -133,7 +133,21 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
                     className="w-full h-auto mb-2"
                   />
                 ) : (
-                  "Drop an image here"
+                  <span className="text-white">
+                    {values.poster ? (
+                      <img
+                        src={
+                          values.poster instanceof File
+                            ? URL.createObjectURL(values.poster)
+                            : values.poster
+                        }
+                        alt="Selected Image"
+                        className="w-full h-auto mb-2"
+                      />
+                    ) : (
+                      "Drop an image here"
+                    )}
+                  </span>
                 )}
               </div>
             </div>
@@ -144,6 +158,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
               name="poster"
               onChange={handleFileUpload}
               onBlur={handleBlur}
+              {...getInputProps()}
             />
             <span>
               {errors.poster && touched.poster ? (

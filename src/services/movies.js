@@ -1,11 +1,13 @@
 // moviesApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getToken } from "../helpers/utils";
+import { getToken } from "helpers/utils";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+console.log(apiUrl);
 export const moviesApi = createApi({
   reducerPath: "moviesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api/",
+    baseUrl: apiUrl,
     prepareHeaders: (headers) => {
       const token = getToken();
       if (token) {
@@ -14,19 +16,28 @@ export const moviesApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["movies"],
+
   endpoints: (builder) => ({
     getMovies: builder.query({
-      // Modify the query to accept page and pageSize parameters
       query: ({ page = 1, pageSize = 10 } = {}) => {
         return `movies?page=${page}&pageSize=${pageSize}`;
       },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result?.data?.map(({ id }) => ({ type: "movies", id })),
+              { type: "movies", id: "MOVIES" },
+            ]
+          : [{ type: "movies", id: "MOVIES" }],
     }),
+
     getMovieById: builder.query({
       query: (id) => `movies/${id}`,
     }),
+
     addMovie: builder.mutation({
       query: (formData) => {
-        console.log("FormData:", formData);
         return {
           url: "movies",
           method: "POST",
@@ -34,12 +45,10 @@ export const moviesApi = createApi({
         };
       },
       providesTags: (result) => result,
+      invalidatesTags: [{ type: "movies", id: "MOVIES" }],
     }),
     updateMovie: builder.mutation({
       query: ({ id, formData }) => {
-        console.log("ID:", id);
-        console.log("FormData:", formData);
-
         return {
           url: `movies/${id}`,
           method: "PATCH",
@@ -47,6 +56,7 @@ export const moviesApi = createApi({
         };
       },
       providesTags: (result) => result,
+      invalidatesTags: [{ type: "movies", id: "MOVIES" }],
     }),
 
     deleteMovie: builder.mutation({

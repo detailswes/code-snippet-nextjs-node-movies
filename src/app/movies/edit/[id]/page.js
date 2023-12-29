@@ -1,8 +1,7 @@
 "use client";
-import MoviesForm from "../../../../components/MoviesForm";
-import { useGetMovieByIdQuery } from "../../../../services/movies";
-import Loader from "../../../../common/Loader";
-import { useState } from "react";
+import MoviesForm from "components/MoviesForm";
+import { useGetMovieByIdQuery } from "services/movies";
+import Loader from "common/Loader";
 
 const EditMovie = ({ params }) => {
   const id = params.id;
