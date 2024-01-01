@@ -49,29 +49,24 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
       formData.append("title", values.title);
       formData.append("publishingYear", values.publishingYear);
       formData.append("poster", values.poster);
-      try {
-        setLoading(true);
-        const data = {
-          id: id,
-          formData: formData,
-        };
-        const response = editPage
-          ? await updateMovie(data)
-          : await addMovie(formData);
-        if (response?.data?.success === true) {
-          toast.success(
-            editPage
-              ? "Movie updated successfully!"
-              : "Movie added successfully!"
-          );
-          router.push("/");
-        }
-      } catch (error) {
-        toast.error(error?.data?.message || "An error occurred.");
-      } finally {
+      const data = {
+        id: id,
+        formData: formData,
+      };
+      setLoading(true);
+      const response = editPage
+        ? await updateMovie(data)
+        : await addMovie(formData);
+      if (response?.data?.success === true) {
+        toast.success(
+          editPage ? "Movie updated successfully!" : "Movie added successfully!"
+        );
+        router.push("/");
         !editPage && action.resetForm();
-        setLoading(false);
+      } else {
+        toast.error(response?.error?.data?.message || "An error occurred.");
       }
+      setLoading(false);
     },
   });
 
