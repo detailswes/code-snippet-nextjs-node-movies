@@ -4,6 +4,7 @@ import MoviesList from "components/MoviesList";
 import EmptyList from "components/EmptyList";
 import { useGetMoviesQuery } from "services/movies";
 import Loader from "common/Loader";
+import Error from "common/error";
 
 const Movies = () => {
   const pageSize = 8;
@@ -16,7 +17,6 @@ const Movies = () => {
     page: currentPage,
     pageSize: pageSize,
   });
-
   const movies = moviesData?.data || [];
   const totalCount = moviesData?.totalCount || 0;
 
@@ -28,24 +28,28 @@ const Movies = () => {
 
   return (
     <>
-      {error && error}
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="container px-6">
-          {movies.length === 0 ? (
-            <EmptyList />
+      {error && <Error />}
+      {!error && (
+        <>
+          {isLoading ? (
+            <Loader />
           ) : (
-            <MoviesList
-              movies={movies}
-              isLoading={isLoading}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              totalCount={totalCount}
-              onPageChange={handlePageChange}
-            />
+            <div className="container px-6">
+              {movies.length === 0 ? (
+                <EmptyList />
+              ) : (
+                <MoviesList
+                  movies={movies}
+                  isLoading={isLoading}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalCount={totalCount}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </div>
           )}
-        </div>
+        </>
       )}
     </>
   );

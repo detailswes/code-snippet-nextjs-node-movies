@@ -16,7 +16,7 @@ git clone https://github.com/detailswes/code-snippet-nextjs-node-movies
 2. Navigate to the project directory:
 
 ```bash
-cd code-snippet-nextjs-shopping-cart
+cd code-snippet-nextjs-node-movies
 ```
 
 3. Install the dependencies:
