@@ -1,12 +1,18 @@
 "use client";
+import { useState } from "react";
 import PlusIcon from "assets/images/icons/plus.svg";
 import LogoutIcon from "assets/images/icons/logout.svg";
 import Link from "next/link";
 import { removeToken } from "helpers/utils";
 import { useRouter } from "next/navigation";
+import { useDeleteMovieMutation } from "services/movies";
+import ConfirmDialog from "common/ConfirmDialog";
 
 const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
   const router = useRouter();
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [movieIdToDelete, setMovieIdToDelete] = useState(null);
+  const [deleteMovie] = useDeleteMovieMutation();
   const handleLogout = () => {
     removeToken();
     router.push("/sign-in");
@@ -14,8 +20,23 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
   const handleEdit = (id) => {
     router.push(`movies/edit/${id}`);
   };
-  const handleDelete = (id) => {};
+  const handleDelete = () => {
+    deleteMovie(movieIdToDelete);
+  };
 
+  const confirmDelete = (id) => {
+    setIsConfirmDialogOpen(true);
+    setMovieIdToDelete(id);
+  };
+
+  const handleConfirm = () => {
+    handleDelete();
+    setIsConfirmDialogOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsConfirmDialogOpen(false);
+  };
   return (
     <>
       <div className="py-32">
@@ -37,7 +58,7 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
           {movies.map((movie, index) => (
             <div
               key={index}
-              className="group bg-card p-2 rounded-xl cursor-pointer hover:bg-[#1E414E] transition-all"
+              className="group bg-card p-2 rounded-xl hover:bg-[#1E414E] transition-all"
             >
               <div className="flex items-center justify-center">
                 <img
@@ -54,8 +75,28 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
                 <div className="flex justify-end items-end space-x-4 mb-2 mt-4">
                   <button
                     type="button"
-                    onClick={() => handleDelete(movie._id)}
-                    className="invisible group-hover:visible hover:bg-primary-900 py-2.5 mb-2"
+                    onClick={() => confirmDelete(movie._id)}
+                    className="invisible group-hover:visible hover:bg-primary-900 py-2.5 mb-3 mr-1"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="red"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleEdit(movie._id)}
+                    className="invisible group-hover:visible hover:bg-primary-900 py-2.5 mb-2 "
                   >
                     <svg
                       className="h-8 w-8 text-green-500"
@@ -70,26 +111,6 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
                       <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />{" "}
                       <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />{" "}
                       <line x1="16" y1="5" x2="19" y2="8" />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleEdit(movie._id)}
-                    className="invisible group-hover:visible hover:bg-primary-900 py-2.5 mb-3 mr-4"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="red"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                      />
                     </svg>
                   </button>
                 </div>
@@ -134,6 +155,14 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
           </button>
         </div>
       </div>
+
+      {isConfirmDialogOpen && (
+        <ConfirmDialog
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          message={"Are you sure you want to delete this item?"}
+        />
+      )}
     </>
   );
 };

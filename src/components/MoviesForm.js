@@ -14,7 +14,10 @@ const FormSchema = Yup.object({
   title: Yup.string().required("Please enter the title"),
   publishingYear: Yup.number()
     .typeError("Publishing year must be a number")
-    .required("Please enter the publishing year"),
+    .required("Please enter the publishing year")
+    .integer("Publishing year must be an integer")
+    .min(1800, "Publishing year must be greater than or equal to 1800")
+    .max(new Date().getFullYear(), "Publishing year cannot be in the future"),
   poster: Yup.mixed().required("Please upload a poster"),
 });
 
@@ -92,7 +95,6 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
     },
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
-      console.log(acceptedFiles);
       setFieldValue("poster", acceptedFiles[0]);
     },
   });
@@ -167,7 +169,9 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
             />
             <span>
               {errors.title && touched.title ? (
-                <p className="form-error text-error">{errors.title}</p>
+                <p className="form-error text-error mt-2 ms-1">
+                  {errors.title}
+                </p>
               ) : null}
             </span>
           </div>
@@ -188,7 +192,9 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
             />
             <span>
               {errors.publishingYear && touched.publishingYear ? (
-                <p className="form-error text-error">{errors.publishingYear}</p>
+                <p className="form-error text-error mt-2 ms-1">
+                  {errors.publishingYear}
+                </p>
               ) : null}
             </span>
           </div>

@@ -63,6 +63,8 @@ export const moviesApi = createApi({
         url: `movies/${id}`,
         method: "DELETE",
       }),
+      providesTags: (result) => result,
+      invalidatesTags: [{ type: "movies", id: "MOVIES" }],
     }),
   }),
 });

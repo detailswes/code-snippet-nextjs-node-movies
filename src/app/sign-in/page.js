@@ -63,7 +63,9 @@ const SignIn = () => {
               />
               <span>
                 {errors.email && touched.email ? (
-                  <p className="form-error text-error">{errors.email}</p>
+                  <p className="form-error text-error mt-2 ms-1">
+                    {errors.email}
+                  </p>
                 ) : null}
               </span>
             </div>
@@ -84,7 +86,9 @@ const SignIn = () => {
               />
               <span>
                 {errors.password && touched.password ? (
-                  <p className="form-error text-error">{errors.password}</p>
+                  <p className="form-error text-error mt-2 ms-1">
+                    {errors.password}
+                  </p>
                 ) : null}
               </span>
             </div>
