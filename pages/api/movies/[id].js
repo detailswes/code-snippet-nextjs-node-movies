@@ -100,12 +100,43 @@ async function getMovieById(req, res) {
     handleErrors(res, 500, "Internal Server Error");
   }
 }
+  //Delete movie
+  async function deleteMovieById(req, res) {
+    try {
+      await connectToDatabase();
+  
+      const movieId = req.query.id;
+      const objectId = mongoose.Types.ObjectId.isValid(movieId) ? mongoose.Types.ObjectId.createFromHexString(movieId): null;
+  
+      const movieToDelete = await Movie.findById(objectId);
+  
+      if (!movieToDelete) {
+        handleErrors(res, 404, 'Movie not found');
+        return;
+      }
+  
+      // Delete the movie poster image
+      const posterPath = `public/movies/${movieToDelete.poster.split('/').pop()}`;
+      if (fs.existsSync(posterPath)) {
+        fs.unlinkSync(posterPath);
+      }
+     
+       await movieToDelete.deleteOne(objectId);
+  
+      handleSuccess(res, 200, 'Movie deleted successfully');
+    } catch (error) {
+      console.error(error);
+      handleErrors(res, 500, 'Internal Server Error');
+    }
+  }
+
 
 const applyAuthMiddleware = (handler) => authMiddleware(handler);
 
 const handlers = {
   PATCH: applyAuthMiddleware(updateMovie),
   GET: applyAuthMiddleware(getMovieById),
+  DELETE: applyAuthMiddleware(deleteMovieById),
 };
 
 export default async function handler(req, res) {
@@ -119,6 +150,5 @@ export default async function handler(req, res) {
   }
 }
 
-// const authenticatedUpdateMovie = authMiddleware(updateMovie);
 
-// export default authenticatedUpdateMovie;
+
