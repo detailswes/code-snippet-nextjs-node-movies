@@ -27,21 +27,17 @@ const SignIn = () => {
     useFormik({
       initialValues: initialValues,
       validationSchema: FormSchema,
-      onSubmit: async (values, action) => {
+      onSubmit: async (values) => {
         setLoading(true);
         try {
           const response = await axios.post(`${apiUrl}users`, values);
           toast.success("Login successfully");
-          const token = response.data.token;
+          const token = response?.data?.token;
           setToken(token);
-          // router.refresh();
           router.push("/");
         } catch (error) {
-          if (error.response.data.success === false) {
-            toast.error("User Not Found");
-          } else {
-            toast.error("An error occurred.");
-          }
+          const errMsg = error?.response?.data?.message || "An error occurred.";
+          toast.error(errMsg);
         }
         setLoading(false);
       },
@@ -110,16 +106,11 @@ const SignIn = () => {
             <input
               className="button"
               type="submit"
-              value={loading ? "Loading..." : "Login"}
+              value={loading ? "Processing..." : "Login"}
             />
           </form>
         </div>
       </div>
-      <style jsx>{`
-        .error-border {
-          border-color: red;
-        }
-      `}</style>
     </>
   );
 };

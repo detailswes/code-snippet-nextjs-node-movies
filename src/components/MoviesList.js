@@ -5,14 +5,7 @@ import Link from "next/link";
 import { removeToken } from "helpers/utils";
 import { useRouter } from "next/navigation";
 
-const MoviesList = ({
-  movies,
-  isLoading,
-  currentPage,
-  totalPages,
-  totalCount,
-  onPageChange,
-}) => {
+const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
   const router = useRouter();
   const handleLogout = () => {
     removeToken();
@@ -63,13 +56,13 @@ const MoviesList = ({
                   className="invisible group-hover:visible mt-4 hover:bg-primary-900  px-3 py-2.5 me-2 mb-2"
                 >
                   <svg
-                    class="h-8 w-8 text-green-500"
+                    className="h-8 w-8 text-green-500"
                     viewBox="0 0 24 24"
-                    stroke-width="2"
+                    strokeWidth="2"
                     stroke="currentColor"
                     fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
                     {" "}
                     <path stroke="none" d="M0 0h24v24H0z" />{" "}

@@ -3,7 +3,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getToken } from "helpers/utils";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-console.log(apiUrl);
 export const moviesApi = createApi({
   reducerPath: "moviesApi",
   baseQuery: fetchBaseQuery({

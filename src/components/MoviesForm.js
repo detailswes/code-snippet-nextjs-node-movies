@@ -46,45 +46,32 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
       formData.append("title", values.title);
       formData.append("publishingYear", values.publishingYear);
       formData.append("poster", values.poster);
-      if (editPage) {
-        try {
-          setLoading(true);
-          const data = {
-            id: id,
-            formData: formData,
-          };
-          const response = await updateMovie(data);
-          if (response?.data?.success === true) {
-            toast.success("Movie Updated successfully!");
-            router.push("/");
-          }
-        } catch (error) {
-          if (error.data) {
-            toast.error(error.data.message);
-          } else {
-            toast.error("An error occurred.");
-          }
-        } finally {
-          setLoading(false);
+      try {
+        setLoading(true);
+        const data = {
+          id: id,
+          formData: formData,
+        };
+        const response = editPage
+          ? await updateMovie(data)
+          : await addMovie(formData);
+        if (response?.data?.success === true) {
+          toast.success(
+            editPage
+              ? "Movie updated successfully!"
+              : "Movie added successfully!"
+          );
+          router.push("/");
         }
-      } else {
-        try {
-          setLoading(true);
-          const response = await addMovie(formData);
-          if (response?.data?.success === true) {
-            toast.success("Movie added successfully!");
-            router.push("/");
-          }
-        } catch (error) {
-          if (error.data) {
-            toast.error(error.data.message);
-          } else {
-            toast.error("An error occurred.");
-          }
-        } finally {
-          action.resetForm();
-          setLoading(false);
+      } catch (error) {
+        if (error.data) {
+          toast.error(error.data.message);
+        } else {
+          toast.error("An error occurred.");
         }
+      } finally {
+        editPage && action.resetForm();
+        setLoading(false);
       }
     },
   });
@@ -99,13 +86,13 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
     }
   }, [movieData]);
 
-  const handleFileUpload = (e) => {
-    setFieldValue("poster", e.target.files[0]);
-  };
-
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
+    accept: {
+      "image/*": [".jpeg", ".jpg", ".png"],
+    },
+    maxFiles: 1,
     onDrop: (acceptedFiles) => {
+      console.log(acceptedFiles);
       setFieldValue("poster", acceptedFiles[0]);
     },
   });
@@ -114,10 +101,9 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
     <form method="post" onSubmit={handleSubmit}>
       <div className="w-full lg:flex items-start">
         <div className="flex items-center justify-center w-full max-w-[473px] lg:mr-[127px]">
-          <label
-            htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full min-h-[504px] border-2 border-white border-dashed rounded-xl cursor-pointer bg-input"
+          <div
             {...getRootProps()}
+            className="flex flex-col items-center justify-center w-full min-h-[504px] border-2 border-white border-dashed rounded-xl cursor-pointer bg-input"
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <UploadIcon className="mb-2" />
@@ -156,8 +142,6 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
               type="file"
               className="hidden"
               name="poster"
-              onChange={handleFileUpload}
-              onBlur={handleBlur}
               {...getInputProps()}
             />
             <span>
@@ -165,7 +149,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
                 <p className="form-error text-error">{errors.poster}</p>
               ) : null}
             </span>
-          </label>
+          </div>
         </div>
 
         <div className="w-full mt-4 lg:mt-0 max-w-[362px]">
@@ -214,7 +198,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
               <button className="light-button mr-2">Cancel</button>
             </Link>
             <button type="submit" className="button ml-2">
-              {loading ? "Loading..." : editPage ? "Update" : "Submit"}
+              {loading ? "Processing..." : editPage ? "Update" : "Submit"}
             </button>
           </div>
         </div>

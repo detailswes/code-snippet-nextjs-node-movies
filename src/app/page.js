@@ -1,9 +1,5 @@
-import MyMovies from "./movies/page";
+import MoviesList from "./movies/page";
 
 export default function Home() {
-  return (
-    <>
-      <MyMovies />
-    </>
-  );
+  return <MoviesList />;
 }

@@ -5,14 +5,13 @@ import EmptyList from "components/EmptyList";
 import { useGetMoviesQuery } from "services/movies";
 import Loader from "common/Loader";
 
-const MyMovies = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Movies = () => {
   const pageSize = 8;
-
+  const [currentPage, setCurrentPage] = useState(1);
   const {
     data: moviesData,
-    error,
     isLoading,
+    error,
   } = useGetMoviesQuery({
     page: currentPage,
     pageSize: pageSize,
@@ -29,6 +28,7 @@ const MyMovies = () => {
 
   return (
     <>
+      {error && error}
       {isLoading ? (
         <Loader />
       ) : (
@@ -51,4 +51,4 @@ const MyMovies = () => {
   );
 };
 
-export default MyMovies;
+export default Movies;
