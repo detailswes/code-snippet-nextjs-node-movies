@@ -51,7 +51,7 @@ async function createMovie(req, res) {
       });
 
       await newMovie.save();
-      handleSuccess(res, 201, 'Movie created successfully', date= newMovie);
+      handleSuccess(res, 201, 'Movie created successfully',  newMovie);
       
     });
   } catch (error) {
