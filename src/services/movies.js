@@ -59,10 +59,12 @@ export const moviesApi = createApi({
     }),
 
     deleteMovie: builder.mutation({
-      query: (id) => ({
-        url: `movies/${id}`,
-        method: "DELETE",
-      }),
+      query: (id) => {
+        return {
+          url: `movies/${id}`,
+          method: "DELETE",
+        };
+      },
       providesTags: (result) => result,
       invalidatesTags: [{ type: "movies", id: "MOVIES" }],
     }),

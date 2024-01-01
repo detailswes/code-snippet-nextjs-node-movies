@@ -31,15 +31,18 @@ const SignIn = () => {
         setLoading(true);
         try {
           const response = await axios.post(`${apiUrl}users`, values);
-          toast.success("Login successfully");
           const token = response?.data?.token;
           setToken(token);
           router.push("/");
+          toast.success("Login successfully");
         } catch (error) {
-          const errMsg = error?.response?.data?.message || "An error occurred.";
+          const errMsg =
+            error?.response?.data?.message ||
+            "An error occurred. Please try again.";
           toast.error(errMsg);
+        } finally {
+          setLoading(false);
         }
-        setLoading(false);
       },
     });
 

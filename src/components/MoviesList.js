@@ -7,6 +7,7 @@ import { removeToken } from "helpers/utils";
 import { useRouter } from "next/navigation";
 import { useDeleteMovieMutation } from "services/movies";
 import ConfirmDialog from "common/ConfirmDialog";
+import { toast } from "react-toastify";
 
 const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
   const router = useRouter();
@@ -20,8 +21,16 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
   const handleEdit = (id) => {
     router.push(`movies/edit/${id}`);
   };
-  const handleDelete = () => {
-    deleteMovie(movieIdToDelete);
+  const handleDelete = async () => {
+    try {
+      const response = await deleteMovie(movieIdToDelete);
+      toast.success(response?.data?.message);
+      if (currentPage > 1 && movies.length === 1) {
+        onPageChange(1);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
   };
 
   const confirmDelete = (id) => {
@@ -75,26 +84,6 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
                 <div className="flex justify-end items-end space-x-4 mb-2 mt-4">
                   <button
                     type="button"
-                    onClick={() => confirmDelete(movie._id)}
-                    className="invisible group-hover:visible hover:bg-primary-900 py-2.5 mb-3 mr-1"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="red"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
                     onClick={() => handleEdit(movie._id)}
                     className="invisible group-hover:visible hover:bg-primary-900 py-2.5 mb-2 "
                   >
@@ -111,6 +100,26 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
                       <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />{" "}
                       <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />{" "}
                       <line x1="16" y1="5" x2="19" y2="8" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => confirmDelete(movie._id)}
+                    className="invisible group-hover:visible hover:bg-primary-900 py-2.5 mb-3 mr-1"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="red"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      />
                     </svg>
                   </button>
                 </div>
