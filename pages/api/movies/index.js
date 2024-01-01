@@ -1,10 +1,9 @@
-import { connectToDatabase } from '../database/db';
-import Movie from '../models/movies';
-import authMiddleware from '../utils/middleware/jwtAuth';
-import upload from '../utils/imageUpload/multer';
-import validateMovieInput from '../validation/movieCreateValidation';
-import fs from 'fs';
-
+import { connectToDatabase } from "../database/db";
+import Movie from "../models/movies";
+import authMiddleware from "../utils/middleware/jwtAuth";
+import upload from "../utils/imageUpload/multer";
+import validateMovieInput from "../validation/movieCreateValidation";
+import fs from "fs";
 
 export const config = {
   api: {
@@ -24,9 +23,9 @@ async function createMovie(req, res) {
   try {
     await connectToDatabase();
 
-    upload.single('poster')(req, res, async function (err) {
+    upload.single("poster")(req, res, async function (err) {
       if (err) {
-        handleErrors(res, 500, 'Error uploading file');
+        handleErrors(res, 500, "Error uploading file");
         return;
       }
 
@@ -37,7 +36,7 @@ async function createMovie(req, res) {
       });
 
       if (error) {
-        if(req.file){
+        if (req.file) {
           fs.unlinkSync(req?.file?.path);
         }
         handleErrors(res, 400, error.details[0].message);
@@ -51,11 +50,10 @@ async function createMovie(req, res) {
       });
 
       await newMovie.save();
-      handleSuccess(res, 201, 'Movie created successfully',  newMovie);
-      
+      handleSuccess(res, 201, "Movie created successfully", newMovie);
     });
   } catch (error) {
-    handleErrors(res, 500, 'Internal Server Error');
+    handleErrors(res, 500, "Internal Server Error");
   }
 }
 
@@ -70,9 +68,11 @@ async function listMovies(req, res) {
     const movies = await Movie.find().skip(skip).limit(pageSize);
     const totalCount = await Movie.countDocuments();
 
-    res.status(200).json({ success: true, data: movies, totalCount: totalCount });
+    res
+      .status(200)
+      .json({ success: true, data: movies, totalCount: totalCount });
   } catch (error) {
-    handleErrors(res, 500, 'Internal Server Error');
+    handleErrors(res, 500, "Internal Server Error");
   }
 }
 
@@ -91,6 +91,6 @@ export default async function handler(req, res) {
   if (selectedHandler) {
     selectedHandler(req, res);
   } else {
-    handleErrors(res, 405, 'Method Not Allowed');
+    handleErrors(res, 405, "Method Not Allowed");
   }
 }

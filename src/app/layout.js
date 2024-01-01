@@ -1,6 +1,9 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { Providers } from "../services/provider";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,8 +13,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-background bg-[url('../assets/images/waves.png')] bg-contain bg-no-repeat bg-bottom `}>
-        {children}
+      <body>
+        <div
+          className={`${inter.className} bg-background bg-[url('../assets/images/waves.png')] bg-contain bg-no-repeat bg-bottom `}
+        >
+          <Providers>
+            <ToastContainer />
+            {children}
+          </Providers>
+        </div>
       </body>
     </html>
   );
