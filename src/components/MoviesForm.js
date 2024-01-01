@@ -67,13 +67,9 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
           router.push("/");
         }
       } catch (error) {
-        if (error.data) {
-          toast.error(error.data.message);
-        } else {
-          toast.error("An error occurred.");
-        }
+        toast.error(error?.data?.message || "An error occurred.");
       } finally {
-        editPage && action.resetForm();
+        !editPage && action.resetForm();
         setLoading(false);
       }
     },
