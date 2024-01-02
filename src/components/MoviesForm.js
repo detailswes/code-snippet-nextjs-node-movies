@@ -163,7 +163,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
               }`}
               type="text"
               name="title"
-              placeholder="Placeholder"
+              placeholder="Title"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.title}
@@ -209,7 +209,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
                 }`}
                 type="text"
                 name="title"
-                placeholder="Placeholder"
+                placeholder="Title"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.title}
