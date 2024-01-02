@@ -52,7 +52,7 @@ async function listMovies(req, res) {
     const pageSize = parseInt(req.query.pageSize) || 10;
     const skip = (page - 1) * pageSize;
 
-    const movies = await Movie.find().skip(skip).limit(pageSize);
+    const movies = await Movie.find().sort({ _id: -1 }).skip(skip).limit(pageSize);
     const totalCount = await Movie.countDocuments();
 
     res.status(200).json({ success: true, data: movies, totalCount: totalCount });
