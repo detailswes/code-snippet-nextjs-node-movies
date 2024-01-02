@@ -60,43 +60,51 @@ async function updateMovie(req, res) {
 }
 
 
-async function getMovieById(req, res) {
-  try {
-    await connectToDatabase();
 
-    const movieId = req.query.id;
-    const objectId = mongoose.Types.ObjectId.isValid(movieId)
-      ? mongoose.Types.ObjectId.createFromHexString(movieId)
-      : null;
-    const movie = await Movie.findById(objectId);
-
-    if (!movie) {
-      handleErrors(res, 404, "Movie not found");
-      return;
+  async function getMovieById(req, res) {
+    try {
+      await connectToDatabase();
+  
+      const movieId = req.query.id;
+      const objectId = mongoose.Types.ObjectId.isValid(movieId)
+        ? mongoose.Types.ObjectId.createFromHexString(movieId)
+        : null;
+      
+      // Find the movie by ID and check if it belongs to the logged-in user
+      const movie = await Movie.findOne({ _id: objectId, user_id: req.user.userId });
+  
+      if (!movie) {
+        handleErrors(res, 404, "Movie not found or you don't have permission to view it");
+        return;
+      }
+  
+      handleSuccess(res, 200, "Movie retrieved successfully", movie);
+    } catch (error) {
+      console.error(error);
+      handleErrors(res, 500, "Internal Server Error");
     }
-
-    handleSuccess(res, 200, "Movie get successfully", movie);
-  } catch (error) {
-    console.error(error);
-    handleErrors(res, 500, "Internal Server Error");
   }
-}
-  //Delete movie
+  
+  
+  
   async function deleteMovieById(req, res) {
     try {
       await connectToDatabase();
   
       const movieId = req.query.id;
-      const objectId = mongoose.Types.ObjectId.isValid(movieId) ? mongoose.Types.ObjectId.createFromHexString(movieId): null;
+      const objectId = mongoose.Types.ObjectId.isValid(movieId)
+        ? mongoose.Types.ObjectId.createFromHexString(movieId)
+        : null;
   
-      const movieToDelete = await Movie.findById(objectId);
+      // Find the movie by ID and check if it belongs to the logged-in user
+      const movieToDelete = await Movie.findOne({ _id: objectId, user_id: req.user.userId });
   
       if (!movieToDelete) {
-        handleErrors(res, 404, 'Movie not found');
+        handleErrors(res, 404, "Movie not found or you don't have permission to delete it");
         return;
       }
   
-       await movieToDelete.deleteOne(objectId);
+      await movieToDelete.deleteOne();
   
       handleSuccess(res, 200, 'Movie deleted successfully');
     } catch (error) {
@@ -104,7 +112,7 @@ async function getMovieById(req, res) {
       handleErrors(res, 500, 'Internal Server Error');
     }
   }
-
+  
 
 const applyAuthMiddleware = (handler) => authMiddleware(handler);
 
