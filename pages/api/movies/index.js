@@ -34,7 +34,8 @@ async function createMovie(req, res) {
     const newMovie = new Movie({
       title: value.title,
       publishingYear: value.publishingYear,
-      poster: value.poster
+      poster: value.poster,
+      user_id: req.user.userId,
     });
 
     await newMovie.save();
@@ -44,6 +45,8 @@ async function createMovie(req, res) {
   }
 }
 
+
+
 async function listMovies(req, res) {
   try {
     await connectToDatabase();
@@ -52,15 +55,17 @@ async function listMovies(req, res) {
     const pageSize = parseInt(req.query.pageSize) || 10;
     const skip = (page - 1) * pageSize;
 
-    const movies = await Movie.find().sort({ _id: -1 }).skip(skip).limit(pageSize);
-    const totalCount = await Movie.countDocuments();
+    // Only fetch movies created by the logged-in user
+    const userId = req.user.userId; // Assuming the user ID is available in the decoded token
+    const movies = await Movie.find({ user_id: userId }).sort({ _id: -1 }).skip(skip).limit(pageSize);
+    const totalCount = await Movie.countDocuments({ user_id: userId });
 
     res.status(200).json({ success: true, data: movies, totalCount: totalCount });
   } catch (error) {
+    console.error(error);
     handleErrors(res, 500, "Internal Server Error");
   }
 }
-
 // Apply authentication middleware dynamically
 const applyAuthMiddleware = (handler) => authMiddleware(handler);
 
@@ -79,3 +84,8 @@ export default async function handler(req, res) {
     handleErrors(res, 405, "Method Not Allowed");
   }
 }
+
+
+
+
+

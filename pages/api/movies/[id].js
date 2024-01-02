@@ -22,42 +22,43 @@ async function updateMovie(req, res) {
   try {
     await connectToDatabase();
 
+    const { error, value } = validateMovieInput({
+      title: req.body.title,
+      publishingYear: parseInt(req.body.publishingYear),
+      poster: req.body.poster,
+    });
 
-      const { error, value } = validateMovieInput({
-        title: req.body.title,
-        publishingYear: parseInt(req.body.publishingYear),
-        poster: req.body.poster,
-      });
+    if (error) {
+      handleErrors(res, 400, error.details[0].message);
+      return;
+    }
 
-      if (error) {
-        handleErrors(res, 400, error.details[0].message);
-        return;
-      }
+    const movieId = req.query.id;
+    const objectId = mongoose.Types.ObjectId.isValid(movieId)
+      ? mongoose.Types.ObjectId.createFromHexString(movieId)
+      : null;
+    
+    // Find the existing movie and check if the logged-in user created it
+    const existingMovie = await Movie.findOne({ _id: objectId, user_id: req.user.userId });
 
-      const movieId = req.query.id;
-      const objectId = mongoose.Types.ObjectId.isValid(movieId)
-        ? mongoose.Types.ObjectId.createFromHexString(movieId)
-        : null;
-      const existingMovie = await Movie.findById(objectId);
+    if (!existingMovie) {
+      handleErrors(res, 404, "Movie not found or you don't have permission to update it");
+      return;
+    }
 
-      if (!existingMovie) {
-        handleErrors(res, 404, "Movie not found");
-        return;
-      }
+    // Update the movie details
+    existingMovie.title = value.title;
+    existingMovie.publishingYear = value.publishingYear;
+    existingMovie.poster = value.poster;
 
+    await existingMovie.save();
 
-      // Update the movie details
-      existingMovie.title = value.title;
-      existingMovie.publishingYear = value.publishingYear;
-      existingMovie.poster = value.poster
-
-      await existingMovie.save();
-
-      handleSuccess(res, 200, "Movie updated successfully", existingMovie);
+    handleSuccess(res, 200, "Movie updated successfully", existingMovie);
   } catch (error) {
     handleErrors(res, 500, "Internal Server Error");
   }
 }
+
 
 async function getMovieById(req, res) {
   try {

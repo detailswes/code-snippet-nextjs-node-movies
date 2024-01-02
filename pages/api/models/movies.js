@@ -16,6 +16,11 @@ try {
       type: String, 
       required: true,
     },
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Reference to the User model
+      required: true,
+    },
   });
 
   Movie = mongoose.model('Movie', movieSchema);
