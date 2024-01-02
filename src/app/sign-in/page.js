@@ -109,11 +109,14 @@ const SignIn = () => {
                 Remember me
               </label>
             </div>
-            <input
+            <button
               className="button"
               type="submit"
-              value={loading ? "Processing..." : "Login"}
-            />
+              disabled={loading}
+              style={{ cursor: loading ? "not-allowed" : "pointer" }}
+            >
+              {loading ? "Processing..." : "Login"}
+            </button>
           </form>
         </div>
       </div>

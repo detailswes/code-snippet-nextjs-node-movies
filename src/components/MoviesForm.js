@@ -80,14 +80,16 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
     }
   }, [movieData]);
 
+  const onDrop = (acceptedFiles) => {
+    setFieldValue("poster", acceptedFiles[0]);
+  };
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [".jpeg", ".jpg", ".png"],
     },
     maxFiles: 1,
-    onDrop: (acceptedFiles) => {
-      setFieldValue("poster", acceptedFiles[0]);
-    },
+    onDrop,
   });
 
   return (
@@ -240,7 +242,12 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
               {" "}
               <button className="light-button mr-2">Cancel</button>
             </Link>
-            <button type="submit" className="button ml-2">
+            <button
+              type="submit"
+              className="button ml-2"
+              disabled={loading}
+              style={{ cursor: loading ? "not-allowed" : "pointer" }}
+            >
               {loading ? "Processing..." : editPage ? "Update" : "Submit"}
             </button>
           </div>
