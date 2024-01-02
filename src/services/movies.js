@@ -39,22 +39,22 @@ export const moviesApi = createApi({
     }),
 
     addMovie: builder.mutation({
-      query: (formData) => {
+      query: (values) => {
         return {
           url: "movies",
           method: "POST",
-          body: formData,
+          body: values,
         };
       },
       providesTags: (result) => result,
       invalidatesTags: [{ type: "movies", id: "MOVIES" }],
     }),
     updateMovie: builder.mutation({
-      query: ({ id, formData }) => {
+      query: ({ id, values }) => {
         return {
           url: `movies/${id}`,
           method: "PATCH",
-          body: formData,
+          body: values,
         };
       },
       providesTags: (result) => result,

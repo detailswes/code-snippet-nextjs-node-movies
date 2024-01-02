@@ -45,18 +45,14 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
     initialValues: initialValues,
     validationSchema: FormSchema,
     onSubmit: async (values, action) => {
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("publishingYear", values.publishingYear);
-      formData.append("poster", values.poster);
       const data = {
         id: id,
-        formData: formData,
+        values: values,
       };
       setLoading(true);
       const response = editPage
         ? await updateMovie(data)
-        : await addMovie(formData);
+        : await addMovie(values);
       if (response?.data?.success === true) {
         toast.success(
           editPage ? "Movie updated successfully!" : "Movie added successfully!"
@@ -80,8 +76,21 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
     }
   }, [movieData]);
 
-  const onDrop = (acceptedFiles) => {
-    setFieldValue("poster", acceptedFiles[0]);
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+
+  const convertFileIntoBase64 = async (files) => {
+    const base64File = await toBase64(files[0]);
+    return base64File;
+  };
+
+  const onDrop = async (acceptedFiles) => {
+    setFieldValue("poster", await convertFileIntoBase64(acceptedFiles));
   };
 
   const { getRootProps, getInputProps } = useDropzone({
