@@ -92,11 +92,11 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
 
   return (
     <form method="post" onSubmit={handleSubmit}>
-      <div className="w-full lg:flex items-start">
-        <div className="flex items-center justify-center w-full max-w-[473px] lg:mr-[127px]">
+      <div className="w-full flex flex-wrap items-start">
+        <div className="flex items-center justify-center w-full md:max-w-[473px] lg:mr-[127px] order-2 md:order-none">
           <div
             {...getRootProps()}
-            className="flex flex-col items-center justify-center w-full min-h-[504px] border-2 border-white border-dashed rounded-xl cursor-pointer bg-input"
+            className="flex flex-col items-center justify-center w-full min-h-[380px] lg:min-h-[504px] border-2 border-white border-dashed rounded-xl cursor-pointer bg-input"
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <UploadIcon className="mb-2" />
@@ -144,8 +144,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
             </span>
           </div>
         </div>
-
-        <div className="w-full mt-4 lg:mt-0 max-w-[362px]">
+        <div className="w-full mt-4 lg:mt-0 md:max-w-[362px] block md:hidden order-1 md:order-none">
           <div className="mb-6">
             <InputBox
               className={`inputbox ${
@@ -189,7 +188,54 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
               ) : null}
             </span>
           </div>
-          <div className="mt-16 flex justify-between items-center">
+        </div>
+        <div className="w-full mt-4 lg:mt-0 md:max-w-[362px] order-3 md:order-none">
+          <div className="hidden md:block">
+            <div className="mb-6">
+              <InputBox
+                className={`inputbox ${
+                  errors.title && touched.title ? "border border-error" : ""
+                }`}
+                type="text"
+                name="title"
+                placeholder="Placeholder"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.title}
+              />
+              <span>
+                {errors.title && touched.title ? (
+                  <p className="form-error text-error mt-2 ms-1">
+                    {errors.title}
+                  </p>
+                ) : null}
+              </span>
+            </div>
+
+            <div className="w-full mb-6">
+              <InputBox
+                className={`inputbox ${
+                  errors.publishingYear && touched.publishingYear
+                    ? "border border-error"
+                    : ""
+                }`}
+                type="text"
+                name="publishingYear"
+                placeholder="Publishing year"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.publishingYear}
+              />
+              <span>
+                {errors.publishingYear && touched.publishingYear ? (
+                  <p className="form-error text-error mt-2 ms-1">
+                    {errors.publishingYear}
+                  </p>
+                ) : null}
+              </span>
+            </div>
+          </div>
+          <div className="mt-10 md:mt-16 flex justify-between items-center">
             <Link href={"/"} className="light-button mr-2">
               {" "}
               <button className="light-button mr-2">Cancel</button>

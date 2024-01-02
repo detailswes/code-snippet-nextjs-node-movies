@@ -63,7 +63,7 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
             <LogoutIcon className="ms-3" />
           </button>
         </div>
-        <div className="mx-auto grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
           {movies.map((movie, index) => (
             <div
               key={index}

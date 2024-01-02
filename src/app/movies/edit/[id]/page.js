@@ -20,7 +20,9 @@ const EditMovie = ({ params }) => {
             <div className="container px-6">
               <div className="py-32">
                 <div className="w-full">
-                  <h1 className="mb-32">Edit</h1>
+                  <h1 className="mb-16 md:mb-32 text-[32px] lg:text-5xl">
+                    Edit
+                  </h1>
                   <MoviesForm movie={movie} editPage={editPage} id={id} />
                 </div>
               </div>
