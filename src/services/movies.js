@@ -15,7 +15,7 @@ export const moviesApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["movies"],
+  tagTypes: ["movies", "singleMovie"],
 
   endpoints: (builder) => ({
     getMovies: builder.query({
@@ -32,7 +32,10 @@ export const moviesApi = createApi({
     }),
 
     getMovieById: builder.query({
-      query: (id) => `movies/${id}`,
+      query: (id) => {
+        return `movies/${id}`;
+      },
+      providesTags: [{ type: "singleMovie", id: "singleMovie" }],
     }),
 
     addMovie: builder.mutation({
@@ -55,7 +58,10 @@ export const moviesApi = createApi({
         };
       },
       providesTags: (result) => result,
-      invalidatesTags: [{ type: "movies", id: "MOVIES" }],
+      invalidatesTags: [
+        { type: "movies", id: "MOVIES" },
+        { type: "singleMovie", id: "singleMovie" },
+      ],
     }),
 
     deleteMovie: builder.mutation({
