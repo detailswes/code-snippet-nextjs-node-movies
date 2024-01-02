@@ -34,7 +34,6 @@ const SignIn = () => {
           const token = response?.data?.token;
           setToken(token);
           router.push("/");
-          toast.success("Login successfully");
         } catch (error) {
           const errMsg =
             error?.response?.data?.message ||
