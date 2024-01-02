@@ -11,7 +11,7 @@ const Movies = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const {
     data: moviesData,
-    isLoading,
+    isFetching,
     error,
   } = useGetMoviesQuery({
     page: currentPage,
@@ -25,13 +25,12 @@ const Movies = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
   return (
     <>
       {error && <Error />}
       {!error && (
         <>
-          {isLoading ? (
+          {isFetching ? (
             <Loader />
           ) : (
             <div className="container px-6">
@@ -40,7 +39,6 @@ const Movies = () => {
               ) : (
                 <MoviesList
                   movies={movies}
-                  isLoading={isLoading}
                   currentPage={currentPage}
                   totalPages={totalPages}
                   totalCount={totalCount}
