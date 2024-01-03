@@ -1,4 +1,5 @@
-import { connectToDatabase } from "../database/db";
+
+import dbMiddleware from "../middleware/dbMiddleware";
 import Movie from "../models/movies";
 import authMiddleware from "../utils/middleware/jwtAuth";
 import validateMovieInput from "../validation/movieCreateValidation";
@@ -19,7 +20,6 @@ const handleSuccess = (res, status, message, data = null) => {
 
 async function createMovie(req, res) {
   try {
-    await connectToDatabase();
     const { error, value } = validateMovieInput({
       title: req.body.title,
       publishingYear: parseInt(req.body.publishingYear),
@@ -49,7 +49,6 @@ async function createMovie(req, res) {
 
 async function listMovies(req, res) {
   try {
-    await connectToDatabase();
 
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
@@ -66,6 +65,9 @@ async function listMovies(req, res) {
     handleErrors(res, 500, "Internal Server Error");
   }
 }
+
+
+
 // Apply authentication middleware dynamically
 const applyAuthMiddleware = (handler) => authMiddleware(handler);
 
@@ -75,14 +77,16 @@ const handlers = {
 };
 
 export default async function handler(req, res) {
-  const method = req.method.toUpperCase();
-  const selectedHandler = handlers[method];
+  await dbMiddleware(req, res, async () => {
+    const method = req.method.toUpperCase();
+    const selectedHandler = handlers[method];
 
-  if (selectedHandler) {
-    selectedHandler(req, res);
-  } else {
-    handleErrors(res, 405, "Method Not Allowed");
-  }
+    if (selectedHandler) {
+      selectedHandler(req, res);
+    } else {
+      handleErrors(res, 405, 'Method Not Allowed');
+    }
+  });
 }
 
 

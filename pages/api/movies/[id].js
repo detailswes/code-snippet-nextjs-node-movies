@@ -1,8 +1,10 @@
-import { connectToDatabase } from "../database/db";
+
 import Movie from "../models/movies";
 import validateMovieInput from "../validation/movieUpdateValidation";
 import authMiddleware from "../utils/middleware/jwtAuth";
 import mongoose from "mongoose";
+import dbMiddleware from "../middleware/dbMiddleware";
+
 
 export const config = {
   api: {
@@ -20,7 +22,6 @@ const handleSuccess = (res, status, message, data = null) => {
 
 async function updateMovie(req, res) {
   try {
-    await connectToDatabase();
 
     const { error, value } = validateMovieInput({
       title: req.body.title,
@@ -63,8 +64,6 @@ async function updateMovie(req, res) {
 
   async function getMovieById(req, res) {
     try {
-      await connectToDatabase();
-  
       const movieId = req.query.id;
       const objectId = mongoose.Types.ObjectId.isValid(movieId)
         ? mongoose.Types.ObjectId.createFromHexString(movieId)
@@ -89,7 +88,6 @@ async function updateMovie(req, res) {
   
   async function deleteMovieById(req, res) {
     try {
-      await connectToDatabase();
   
       const movieId = req.query.id;
       const objectId = mongoose.Types.ObjectId.isValid(movieId)
@@ -123,15 +121,16 @@ const handlers = {
 };
 
 export default async function handler(req, res) {
-  const method = req.method.toUpperCase();
-  const selectedHandler = handlers[method];
+  await dbMiddleware(req, res, async () => {
+    const method = req.method.toUpperCase();
+    const selectedHandler = handlers[method];
 
-  if (selectedHandler) {
-    selectedHandler(req, res);
-  } else {
-    handleErrors(res, 405, "Method Not Allowed");
-  }
+    if (selectedHandler) {
+      selectedHandler(req, res);
+    } else {
+      handleErrors(res, 405, 'Method Not Allowed');
+    }
+  });
 }
-
 
 

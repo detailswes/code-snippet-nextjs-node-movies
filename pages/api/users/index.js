@@ -1,9 +1,8 @@
-import { connectToDatabase } from "../database/db";
 import User from "../models/user";
 import jwt from "jsonwebtoken";
 import { loginValidationSchema } from "../validation/loginValidation";
-import dotenv from "dotenv";
-dotenv.config();
+import dbMiddleware from "../middleware/dbMiddleware";
+
 const handleErrors = (res, status, message) => {
   res.status(status).json({ success: false, message });
 };
@@ -13,6 +12,7 @@ const handleSuccess = (res, status, message, token = null) => {
 };
 
 export default async function handler(req, res) {
+  await dbMiddleware(req, res, async () => {
   if (req.method === "POST") {
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Origin", "*"); // You might want to restrict this to a specific origin
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       }
       const { email, password } = value;
 
-      await connectToDatabase();
+      
       const user = await User.findOne({ email });
       if (!user) {
         handleErrors(res, 401, "User Not Found, Enter valid Email");
@@ -47,4 +47,5 @@ export default async function handler(req, res) {
   } else {
     handleErrors(res, 405, "Method Not Allowed");
   }
+})
 }
