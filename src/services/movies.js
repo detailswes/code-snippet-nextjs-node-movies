@@ -4,7 +4,7 @@ import { getToken } from "helpers/utils";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const moviesApi = createApi({
-  reducerPath: "moviesApi",
+  reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: apiUrl,
     prepareHeaders: (headers) => {
@@ -16,26 +16,19 @@ export const moviesApi = createApi({
     },
   }),
   tagTypes: ["movies", "singleMovie"],
-
   endpoints: (builder) => ({
     getMovies: builder.query({
-      query: ({ page = 1, pageSize = 10 } = {}) => {
+      query: ({ page = 1, pageSize = 10 }) => {
         return `movies?page=${page}&pageSize=${pageSize}`;
       },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result?.data?.map(({ id }) => ({ type: "movies", id })),
-              { type: "movies", id: "MOVIES" },
-            ]
-          : [{ type: "movies", id: "MOVIES" }],
+      providesTags: ["movies"],
     }),
 
     getMovieById: builder.query({
       query: (id) => {
         return `movies/${id}`;
       },
-      providesTags: [{ type: "singleMovie", id: "singleMovie" }],
+      providesTags: ["singleMovie"],
     }),
 
     addMovie: builder.mutation({
@@ -46,8 +39,7 @@ export const moviesApi = createApi({
           body: values,
         };
       },
-      providesTags: (result) => result,
-      invalidatesTags: [{ type: "movies", id: "MOVIES" }],
+      invalidatesTags: ["movies"],
     }),
     updateMovie: builder.mutation({
       query: ({ id, values }) => {
@@ -57,11 +49,7 @@ export const moviesApi = createApi({
           body: values,
         };
       },
-      providesTags: (result) => result,
-      invalidatesTags: [
-        { type: "movies", id: "MOVIES" },
-        { type: "singleMovie", id: "singleMovie" },
-      ],
+      invalidatesTags: ["movies", "singleMovie"],
     }),
 
     deleteMovie: builder.mutation({
@@ -71,8 +59,7 @@ export const moviesApi = createApi({
           method: "DELETE",
         };
       },
-      providesTags: (result) => result,
-      invalidatesTags: [{ type: "movies", id: "MOVIES" }],
+      invalidatesTags: ["movies"],
     }),
   }),
 });
