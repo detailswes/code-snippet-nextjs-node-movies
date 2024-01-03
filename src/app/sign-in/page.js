@@ -76,7 +76,7 @@ const SignIn = () => {
               </span>
             </div>
 
-            <div className="mb-6">
+            <div className="mb-6 pb-5">
               <InputBox
                 className={`inputbox ${
                   errors.password && touched.password
@@ -99,20 +99,6 @@ const SignIn = () => {
               </span>
             </div>
 
-            <div className="flex items-center justify-center mb-6">
-              <input
-                id="remember-me"
-                type="checkbox"
-                value=""
-                className="w-[18px] h-[18px] mr-2 text-input bg-input accent-primary rounded-lg focus:ring-primary outline-none focus:ring-1"
-              />
-              <label
-                htmlFor="remember-me"
-                className="text-sm font-normal text-white"
-              >
-                Remember me
-              </label>
-            </div>
             <button
               className="button"
               type="submit"
