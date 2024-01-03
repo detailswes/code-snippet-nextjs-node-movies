@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useAddMovieMutation } from "services/movies";
 import { useUpdateMovieMutation } from "services/movies";
 import Link from "next/link";
+import Image from "next/image";
 const FormSchema = Yup.object({
   title: Yup.string().required("Please enter the title"),
   publishingYear: Yup.number()
@@ -74,7 +75,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
         poster: movieData?.poster,
       });
     }
-  }, [movieData]);
+  }, [movieData, setValues]);
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -113,7 +114,7 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
               <UploadIcon className="mb-2" />
               <div className="mb-2 px-4">
                 {values.poster ? (
-                  <img
+                  <Image
                     src={
                       values.poster instanceof File
                         ? URL.createObjectURL(values.poster)
@@ -121,11 +122,13 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
                     }
                     alt="Selected Image"
                     className="w-full h-auto mb-2"
+                    width={400}
+                    height={400}
                   />
                 ) : (
                   <span className="text-white">
                     {values.poster ? (
-                      <img
+                      <Image
                         src={
                           values.poster instanceof File
                             ? URL.createObjectURL(values.poster)
@@ -133,6 +136,8 @@ const MoviesForm = ({ movie, editPage = false, id }) => {
                         }
                         alt="Selected Image"
                         className="w-full h-auto mb-2"
+                        width={400}
+                        height={400}
                       />
                     ) : (
                       "Drop an image here"

@@ -10,7 +10,7 @@ import { mountStore } from "services/user";
 import { useDispatch } from "react-redux";
 const Movies = () => {
   const dispatch = useDispatch();
-  const { user = {} } = useSelector((state) => state);
+  const user = useSelector((state) => state.user || {});
   const pageSize = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const {

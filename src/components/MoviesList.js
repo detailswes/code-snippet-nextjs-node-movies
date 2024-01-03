@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useDeleteMovieMutation } from "services/movies";
 import ConfirmDialog from "common/ConfirmDialog";
 import { toast } from "react-toastify";
+import Image from "next/image";
 const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
   const router = useRouter();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -69,15 +70,17 @@ const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
               className="group bg-card p-2 rounded-xl hover:bg-[#1E414E] transition-all"
             >
               <div className="flex items-center justify-center">
-                <img
-                  className="object-cover object-center w-full h-[400px] rounded-xl"
+                <Image
+                  className="object-cover object-center w-full min-h-[300px] max-h-[300px] xl:min-h-[400px] lg:max-h-[400px] rounded-xl h-full"
                   src={movie.poster}
+                  width={400}
+                  height={400}
                   alt="product-image"
                 />
               </div>
               <div className="flex justify-between items-start">
                 <div className="mt-4 mb-2">
-                  <h6 className="mb-2 mx-2">{movie.title}</h6>
+                  <h6 className="mb-2 mx-2 break-all">{movie.title}</h6>
                   <p className="mx-2">{movie.publishingYear}</p>
                 </div>
                 <div className="flex justify-end items-end space-x-4 mb-2 mt-4">
