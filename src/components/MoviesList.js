@@ -8,15 +8,14 @@ import { useRouter } from "next/navigation";
 import { useDeleteMovieMutation } from "services/movies";
 import ConfirmDialog from "common/ConfirmDialog";
 import { toast } from "react-toastify";
-
 const MoviesList = ({ movies, currentPage, totalPages, onPageChange }) => {
   const router = useRouter();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [movieIdToDelete, setMovieIdToDelete] = useState(null);
   const [deleteMovie] = useDeleteMovieMutation();
   const handleLogout = () => {
-    removeToken();
     router.push("/sign-in");
+    removeToken();
   };
   const handleEdit = (id) => {
     router.push(`movies/edit/${id}`);

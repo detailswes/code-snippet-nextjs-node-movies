@@ -7,6 +7,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { setToken } from "helpers/utils";
 import { toast } from "react-toastify";
+import { unMountStore } from "services/user";
+import { useDispatch } from "react-redux";
 const initialValues = {
   email: "",
   password: "",
@@ -20,6 +22,7 @@ const FormSchema = Yup.object({
 });
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -33,6 +36,7 @@ const SignIn = () => {
           const response = await axios.post(`${apiUrl}users`, values);
           const token = response?.data?.token;
           setToken(token);
+          dispatch(unMountStore());
           router.push("/");
         } catch (error) {
           const errMsg =
