@@ -1,4 +1,4 @@
-import { connectToDatabase } from "../../database/db";
+import  {connectToDatabase}  from "../../database/db";
 
 export default async function dbMiddleware(req, res, next) {
   try {

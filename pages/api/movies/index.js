@@ -1,7 +1,7 @@
-import dbMiddleware from "../../utils/middleware/dbMiddleware";
-import Movie from "../../models/movies";
-import authMiddleware from "../../utils/middleware/jwtAuth";
-import validateMovieInput from "../../validation/movieCreateValidation";
+import dbMiddleware from "../utils/middleware/dbMiddleware";
+import Movie from "../models/movies";
+import authMiddleware from "../utils/middleware/jwtAuth";
+import validateMovieInput from "../validation/movieCreateValidation";
 
 export const config = {
   api: {
