@@ -1,7 +1,7 @@
-import User from "../models/user";
+import User from "../../models/user";
 import jwt from "jsonwebtoken";
-import { loginValidationSchema } from "../validation/loginValidation";
-import dbMiddleware from "../middleware/dbMiddleware";
+import { loginValidationSchema } from "../../validation/loginValidation";
+import dbMiddleware from "../../utils/middleware/dbMiddleware";
 
 const handleErrors = (res, status, message) => {
   res.status(status).json({ success: false, message });

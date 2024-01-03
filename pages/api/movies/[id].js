@@ -1,9 +1,8 @@
-
-import Movie from "../models/movies";
-import validateMovieInput from "../validation/movieUpdateValidation";
-import authMiddleware from "../utils/middleware/jwtAuth";
+import Movie from "../../models/movies";
+import validateMovieInput from "../../validation/movieUpdateValidation";
+import authMiddleware from "../../utils/middleware/jwtAuth";
 import mongoose from "mongoose";
-import dbMiddleware from "../middleware/dbMiddleware";
+import dbMiddleware from "../../utils/middleware/dbMiddleware";
 
 
 export const config = {
